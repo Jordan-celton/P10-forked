@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../Navigation/Navigation.css";
+import argentBankLogo from "./argentBankLogo.webp";
 
 const Nav = () => {
   return (
@@ -8,7 +9,7 @@ const Nav = () => {
       <Link className="main-nav-logo" to="/">
         <img
           className="main-nav-logo-image"
-          src="./img/argentBankLogo.png"
+          src={argentBankLogo}
           alt="Argent Bank Logo"
         />
         <h1 className="sr-only">Argent Bank</h1>

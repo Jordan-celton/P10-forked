@@ -5,7 +5,6 @@ function Login() {
   return (
     <div className="login-page">
       <h1>Sign In</h1>
-      {/* Formulaire de connexion ici */}
       <form>
         <div>
           <label htmlFor="username">Username</label>

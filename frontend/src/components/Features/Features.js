@@ -1,13 +1,16 @@
 import React from "react";
 import Feature from "../Feature/Feature";
 import "../Features/Features.css";
+import iconChat from "./icon-chat.webp";
+import iconMoney from "./icon-money.webp";
+import iconSecurity from "./icon-security.webp";
 
 const Features = () => {
   return (
     <section className="features">
       <h2 className="sr-only">Features</h2>
       <Feature
-        imgSrc="./img/icon-chat.png"
+        imgSrc={iconChat}
         imgAlt="Chat Icon"
         title="You are our #1 priority"
       >
@@ -15,14 +18,14 @@ const Features = () => {
         chat or through a phone call in less than 5 minutes.
       </Feature>
       <Feature
-        imgSrc="./img/icon-money.png"
+        imgSrc={iconMoney}
         imgAlt="Money Icon"
         title="More savings means higher rates"
       >
         The more you save with us, the higher your interest rate will be!
       </Feature>
       <Feature
-        imgSrc="./img/icon-security.png"
+        imgSrc={iconSecurity}
         imgAlt="Security Icon"
         title="Security you can trust"
       >
