@@ -1,12 +1,14 @@
 import React from "react";
-import Banner from "../components/Banner/Banner.js";
+import Hero from "../components/Hero/Hero";
+import Features from "../components/Features/Features";
 
-const Home = () => {
+function Home() {
   return (
     <div>
-      <Banner />
+      <Hero />
+      <Features />
     </div>
   );
-};
+}
 
 export default Home;

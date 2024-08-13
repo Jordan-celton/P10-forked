@@ -1,21 +1,27 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navigation from "./components/Navigation/Navigation";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import User from "./pages/User";
+import Footer from "./components/Footer/Footer";
 
-const App = () => {
+function App() {
   return (
-    <div id="root">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<User />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <Router>
+      <div>
+        <Navigation />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/user" element={<User />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
-};
+}
 
 export default App;
