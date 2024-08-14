@@ -1,30 +1,50 @@
+/* Navigation.css */
+
 .main-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5px 20px;
-}
-
-.main-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-.main-nav-item {
-  text-decoration: none;
-  margin-right: 0.5rem;
-}
-
-.main-nav-item:hover {
-  text-decoration: underline;
+  background-color: #fff; /* Assurez-vous que le fond est blanc ou une couleur claire */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optionnel : ajouter une ombre subtile */
 }
 
 .main-nav-logo {
   display: flex;
   align-items: center;
+  text-decoration: none; /* Supprimer la décoration du texte (soulignement) */
 }
 
 .main-nav-logo-image {
   max-width: 100%;
-  width: 200px;
+  width: 200px; /* Taille maximale de l'image */
+  height: auto; /* Conserver les proportions de l'image */
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.main-nav-item {
+  font-weight: bold;
+  color: #2c3e50; /* Couleur du texte */
+  text-decoration: none; /* Supprimer la décoration du texte (soulignement) */
+  display: flex;
+  align-items: center;
+}
+
+.main-nav-item i {
+  margin-right: 8px; /* Espacement entre l'icône et le texte */
+}
+
+.main-nav-item:hover {
+  text-decoration: underline; /* Soulignement au survol */
+  color: #00bc77; /* Changer la couleur du texte au survol */
 }

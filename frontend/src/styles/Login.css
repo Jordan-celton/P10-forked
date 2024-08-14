@@ -1,13 +1,25 @@
-.sign-in-button {
-  display: block;
+html,
+body {
+  height: 100%; /* Assurez-vous que le corps et HTML utilisent la hauteur complète de la vue */
+  margin: 0; /* Supprime les marges par défaut */
+}
+
+body {
+  display: flex; /* Active Flexbox */
+  flex-direction: column; /* Organise les éléments enfants en colonne */
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.main {
+  flex: 1;
+  background-color: #12002b;
   width: 100%;
-  padding: 8px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-top: 1rem;
-  border-color: #00bc77;
-  background-color: #00bc77;
-  color: #fff;
+  height: 100%;
 }
 
 .sign-in-content {
@@ -19,12 +31,9 @@
   padding: 2rem;
 }
 
-.sign-in-icon {
-  font-size: 5rem;
-}
-
 .input-remember {
   display: flex;
+  align-items: center;
 }
 
 .input-remember label {
@@ -45,4 +54,22 @@
 .input-wrapper input {
   padding: 5px;
   font-size: 1.2rem;
+}
+
+.sign-in-button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  border-color: #00bc77;
+  background-color: #00bc77;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+}
+
+.sign-in-button:hover {
+  background-color: #009d6b;
 }
