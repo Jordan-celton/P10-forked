@@ -1,0 +1,26 @@
+.main {
+  flex: 1;
+}
+
+.bg-dark {
+  background-color: #12002b;
+}
+/* NotFound.css */
+.error-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  color: #fff;
+  text-align: center;
+}
+
+.error-content h1 {
+  font-size: 6rem;
+  margin: 0;
+}
+
+.error-content p {
+  font-size: 1.5rem;
+}
