@@ -1,36 +1,68 @@
 // Login.js
 import React, { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
-    if (username && password) {
+    if (!email || !password) {
+      setError("L'email et le mot de passe sont requis.");
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("http://localhost:3001/api/v1/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Échec de la connexion:", data); // Affichez les détails de l'échec de la connexion
+        setError(data.message || "Identifiants incorrects");
+        return;
+      }
+
       setIsLoggedIn(true);
-      navigate("/user");
+      localStorage.setItem("authToken", data.body.token); // Stocke le token
+      navigate("/user"); // Redirection après connexion réussie
+    } catch (error) {
+      console.error("Erreur pendant la connexion:", error);
+      setError("Une erreur est survenue. Veuillez réessayer plus tard.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignOut = () => {
+    localStorage.removeItem("authToken");
     setIsLoggedIn(false);
-    navigate("/"); // Redirection vers la page de connexion
+    navigate("/"); // Redirection vers la page d'accueil
   };
 
   if (isLoggedIn) {
     return (
       <div>
-        <h1>Welcome back, {username}!</h1>
-        <button onClick={handleSignOut} className="sign-out-button">
-          Sign Out
-        </button>
-        <Navigate to="/user" />
+        <h1>Welcome back!</h1>
+        <button onClick={handleSignOut}>Sign Out</button>
+        {/* On utilise navigate directement pour redirection */}
+        {/* <Navigate to="/user" /> */}
       </div>
     );
   }
@@ -42,12 +74,13 @@ function Login() {
         <h1>Sign In</h1>
         <form onSubmit={handleLogin}>
           <div className="input-wrapper">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="input-wrapper">
@@ -57,14 +90,16 @@ function Login() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
           <div className="input-remember">
             <input type="checkbox" id="remember-me" />
             <label htmlFor="remember-me">Remember me</label>
           </div>
-          <button type="submit" className="sign-in-button">
-            Sign In
+          {error && <p className="error-message">{error}</p>}
+          <button type="submit" className="sign-in-button" disabled={isLoading}>
+            {isLoading ? "Signing in..." : "Sign In"}
           </button>
         </form>
       </section>
