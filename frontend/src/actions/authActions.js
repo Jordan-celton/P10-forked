@@ -1,4 +1,3 @@
-// Définir les types d'actions
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGOUT = "LOGOUT";
 
@@ -13,9 +12,10 @@ export const logout = () => ({
   type: LOGOUT,
 });
 
-// Exemple d'action async pour la connexion
+// Action pour la connexion
 export const login = (email, password) => async (dispatch) => {
   try {
+    // Requête de connexion
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
       method: "POST",
       headers: {
@@ -25,18 +25,52 @@ export const login = (email, password) => async (dispatch) => {
     });
 
     if (!response.ok) {
-      throw new Error("Erreur lors de la connexion");
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Erreur lors de la connexion");
     }
 
     const data = await response.json();
-    const { username, token } = data.body;
+    const { token } = data.body;
 
+    // Stockez le token dans le localStorage
     localStorage.setItem("authToken", token);
-    localStorage.setItem("username", username);
 
-    dispatch(loginSuccess(username, token));
+    // Requête pour obtenir les informations de l'utilisateur
+    const userProfileResponse = await fetch(
+      "http://localhost:3001/api/v1/user/profile",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!userProfileResponse.ok) {
+      throw new Error("Erreur lors de la récupération du profil utilisateur");
+    }
+
+    const userProfileData = await userProfileResponse.json();
+    const { userName } = userProfileData.body;
+
+    // Stockez les informations de l'utilisateur dans le localStorage
+    localStorage.setItem("username", userName);
+
+    // Dispatch l'action de connexion réussie avec les informations de l'utilisateur
+    dispatch(loginSuccess(userName, token));
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
-    // Vous pourriez aussi gérer les erreurs ici
+    alert(error.message);
+  }
+};
+
+// Action pour initialiser l'authentification
+export const initializeAuth = () => (dispatch) => {
+  const token = localStorage.getItem("authToken");
+  const username = localStorage.getItem("username");
+
+  if (token && username) {
+    dispatch(loginSuccess(username, token));
   }
 };
