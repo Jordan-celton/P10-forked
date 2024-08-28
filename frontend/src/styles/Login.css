@@ -73,3 +73,8 @@ body {
 .sign-in-button:hover {
   background-color: #009d6b;
 }
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}

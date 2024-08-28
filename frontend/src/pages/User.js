@@ -1,17 +1,66 @@
-// User.js
-import React from "react";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUsername } from "../actions/authActions";
 import "../styles/User.css";
 
 const User = () => {
+  const { username } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [newUsername, setNewUsername] = useState(username);
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = () => {
+    dispatch(updateUsername(newUsername)); // Dispatch de l'action pour mettre à jour le nom
+    setIsEditing(false);
+  };
+
+  const handleCancelClick = () => {
+    setIsEditing(false);
+    setNewUsername(username); // Réinitialise le nom si l'édition est annulée
+  };
+
+  const handleInputChange = (event) => {
+    setNewUsername(event.target.value);
+  };
+
   return (
     <main className="main bg-dark">
       <div className="header">
         <h1>
           Welcome back
           <br />
-          Tony Jarvis!
+          {!isEditing ? (
+            <>{username}!</>
+          ) : (
+            <>
+              <input
+                type="text"
+                value={newUsername}
+                onChange={handleInputChange}
+                className="edit-input"
+              />
+            </>
+          )}
         </h1>
-        <button className="edit-button">Edit Name</button>
+        {!isEditing ? (
+          <button className="edit-button" onClick={handleEditClick}>
+            Edit Name
+          </button>
+        ) : (
+          <div>
+            <button className="save-button" onClick={handleSaveClick}>
+              Save
+            </button>
+            <button className="cancel-button" onClick={handleCancelClick}>
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">

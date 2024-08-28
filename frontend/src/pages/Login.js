@@ -1,3 +1,4 @@
+// src/pages/Login.js
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,15 +8,20 @@ import "../styles/Login.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Dispatch l'action de connexion
-    dispatch(login(email, password))
-      .then(() => navigate("/user"))
-      .catch((error) => console.error("Erreur de connexion:", error));
+    setError(null); // Réinitialise l'erreur
+    const result = await dispatch(login(email, password));
+
+    if (result.success) {
+      navigate("/user");
+    } else {
+      setError(result.message); // Affiche l'erreur
+    }
   };
 
   return (
@@ -47,6 +53,7 @@ const Login = () => {
             <input type="checkbox" id="remember-me" />
             <label htmlFor="remember-me">Remember me</label>
           </div>
+          {error && <p className="error-message">{error}</p>}
           <button type="submit" className="sign-in-button">
             Sign In
           </button>

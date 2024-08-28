@@ -1,21 +1,97 @@
+import Cookies from "js-cookie";
+
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGOUT = "LOGOUT";
+export const UPDATE_USERNAME = "UPDATE_USERNAME";
+
+// Action pour la mise à jour du nom d'utilisateur
+export const updateUsername = (newUsername) => async (dispatch) => {
+  const token = Cookies.get("authToken");
+  if (!token) {
+    dispatch(logout());
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ userName: newUsername }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la mise à jour du nom d'utilisateur");
+    }
+
+    dispatch({
+      type: UPDATE_USERNAME,
+      payload: { username: newUsername },
+    });
+  } catch (error) {
+    console.error(
+      "Erreur lors de la mise à jour du nom d'utilisateur :",
+      error
+    );
+  }
+};
 
 // Action pour la connexion réussie
-export const loginSuccess = (username, token) => ({
-  type: LOGIN_SUCCESS,
-  payload: { username, token },
-});
+export const loginSuccess = (username, token) => {
+  Cookies.set("authToken", token);
+  return {
+    type: LOGIN_SUCCESS,
+    payload: { username, token },
+  };
+};
 
 // Action pour la déconnexion
-export const logout = () => ({
-  type: LOGOUT,
-});
+export const logout = () => {
+  Cookies.remove("authToken");
+  return {
+    type: LOGOUT,
+  };
+};
+
+// Action pour vérifier l'état d'authentification
+export const checkAuthStatus = () => async (dispatch) => {
+  const token = Cookies.get("authToken");
+  if (!token) {
+    dispatch(logout());
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const { userName } = data.body;
+      dispatch(loginSuccess(userName, token));
+    } else {
+      dispatch(logout());
+    }
+  } catch (error) {
+    console.error(
+      "Erreur lors de la vérification de l'authentification :",
+      error
+    );
+    dispatch(logout());
+  }
+};
 
 // Action pour la connexion
+
 export const login = (email, password) => async (dispatch) => {
   try {
-    // Requête de connexion
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
       method: "POST",
       headers: {
@@ -32,10 +108,6 @@ export const login = (email, password) => async (dispatch) => {
     const data = await response.json();
     const { token } = data.body;
 
-    // Stockez le token dans le localStorage
-    localStorage.setItem("authToken", token);
-
-    // Requête pour obtenir les informations de l'utilisateur
     const userProfileResponse = await fetch(
       "http://localhost:3001/api/v1/user/profile",
       {
@@ -54,23 +126,10 @@ export const login = (email, password) => async (dispatch) => {
     const userProfileData = await userProfileResponse.json();
     const { userName } = userProfileData.body;
 
-    // Stockez les informations de l'utilisateur dans le localStorage
-    localStorage.setItem("username", userName);
-
-    // Dispatch l'action de connexion réussie avec les informations de l'utilisateur
     dispatch(loginSuccess(userName, token));
+    return { success: true }; // Indique un succès
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
-    alert(error.message);
-  }
-};
-
-// Action pour initialiser l'authentification
-export const initializeAuth = () => (dispatch) => {
-  const token = localStorage.getItem("authToken");
-  const username = localStorage.getItem("username");
-
-  if (token && username) {
-    dispatch(loginSuccess(username, token));
+    return { success: false, message: error.message }; // Retourne une erreur
   }
 };

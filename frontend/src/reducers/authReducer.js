@@ -1,9 +1,9 @@
-import { LOGIN_SUCCESS, LOGOUT } from "../actions/authActions";
+import { LOGIN_SUCCESS, LOGOUT, UPDATE_USERNAME } from "../actions/authActions";
 
 const initialState = {
-  isLoggedIn: !!localStorage.getItem("authToken"),
-  username: localStorage.getItem("username") || "",
-  token: localStorage.getItem("authToken") || "",
+  isLoggedIn: false,
+  username: "",
+  token: "",
 };
 
 const authReducer = (state = initialState, action) => {
@@ -12,8 +12,8 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoggedIn: true,
-        username: action.payload.username || "",
-        token: action.payload.token || "",
+        username: action.payload.username,
+        token: action.payload.token,
       };
     case LOGOUT:
       return {
@@ -21,6 +21,11 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: false,
         username: "",
         token: "",
+      };
+    case UPDATE_USERNAME:
+      return {
+        ...state,
+        username: action.payload.username,
       };
     default:
       return state;
