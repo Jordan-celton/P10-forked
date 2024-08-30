@@ -1,12 +1,10 @@
-import Cookies from "js-cookie";
-
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGOUT = "LOGOUT";
 export const UPDATE_USERNAME = "UPDATE_USERNAME";
 
 // Action pour la mise à jour du nom d'utilisateur
-export const updateUsername = (newUsername) => async (dispatch) => {
-  const token = Cookies.get("authToken");
+export const updateUsername = (newUsername) => async (dispatch, getState) => {
+  const token = getState().auth.token;
   if (!token) {
     dispatch(logout());
     return;
@@ -40,7 +38,6 @@ export const updateUsername = (newUsername) => async (dispatch) => {
 
 // Action pour la connexion réussie
 export const loginSuccess = (username, token) => {
-  Cookies.set("authToken", token);
   return {
     type: LOGIN_SUCCESS,
     payload: { username, token },
@@ -49,15 +46,14 @@ export const loginSuccess = (username, token) => {
 
 // Action pour la déconnexion
 export const logout = () => {
-  Cookies.remove("authToken");
   return {
     type: LOGOUT,
   };
 };
 
 // Action pour vérifier l'état d'authentification
-export const checkAuthStatus = () => async (dispatch) => {
-  const token = Cookies.get("authToken");
+export const checkAuthStatus = () => async (dispatch, getState) => {
+  const token = getState().auth.token;
   if (!token) {
     dispatch(logout());
     return;
@@ -89,7 +85,6 @@ export const checkAuthStatus = () => async (dispatch) => {
 };
 
 // Action pour la connexion
-
 export const login = (email, password) => async (dispatch) => {
   try {
     const response = await fetch("http://localhost:3001/api/v1/user/login", {
@@ -127,9 +122,9 @@ export const login = (email, password) => async (dispatch) => {
     const { userName } = userProfileData.body;
 
     dispatch(loginSuccess(userName, token));
-    return { success: true }; // Indique un succès
+    return { success: true };
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
-    return { success: false, message: error.message }; // Retourne une erreur
+    return { success: false, message: error.message };
   }
 };

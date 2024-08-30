@@ -1,4 +1,3 @@
-// src/pages/Login.js
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -14,13 +13,13 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Réinitialise l'erreur
+    setError(null);
     const result = await dispatch(login(email, password));
 
     if (result.success) {
       navigate("/user");
     } else {
-      setError(result.message); // Affiche l'erreur
+      setError(result.message);
     }
   };
 
