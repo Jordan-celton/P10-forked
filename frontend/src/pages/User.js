@@ -9,23 +9,26 @@ const User = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
-
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const handleSaveClick = () => {
-    dispatch(updateUsername(newUsername)); // Dispatch de l'action pour mettre à jour le nom
+    dispatch(updateUsername(newUsername)); //
     setIsEditing(false);
   };
 
   const handleCancelClick = () => {
     setIsEditing(false);
-    setNewUsername(username); // Réinitialise le nom si l'édition est annulée
+    setNewUsername(username);
+    setFirstName("");
+    setLastName("");
   };
 
-  const handleInputChange = (event) => {
-    setNewUsername(event.target.value);
+  const handleInputChange = (event, setState) => {
+    setState(event.target.value);
   };
 
   return (
@@ -41,8 +44,23 @@ const User = () => {
               <input
                 type="text"
                 value={newUsername}
-                onChange={handleInputChange}
+                onChange={(event) => handleInputChange(event, setNewUsername)}
                 className="edit-input"
+                placeholder="Username"
+              />
+              <input
+                type="text"
+                value={firstName}
+                onChange={(event) => handleInputChange(event, setFirstName)}
+                className="edit-input"
+                placeholder="First Name"
+              />
+              <input
+                type="text"
+                value={lastName}
+                onChange={(event) => handleInputChange(event, setLastName)}
+                className="edit-input"
+                placeholder="Last Name"
               />
             </>
           )}
@@ -52,7 +70,7 @@ const User = () => {
             Edit Name
           </button>
         ) : (
-          <div>
+          <div className="button-container">
             <button className="save-button" onClick={handleSaveClick}>
               Save
             </button>

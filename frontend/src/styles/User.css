@@ -40,6 +40,14 @@ body {
   margin-bottom: 2rem;
 }
 
+.edit-input {
+  display: flex;
+  margin: 20px auto 1rem;
+  padding: 10px;
+  width: 150px;
+  box-sizing: border-box;
+}
+
 .edit-button {
   border-color: #00bc77;
   background-color: #00bc77;
@@ -47,19 +55,24 @@ body {
   font-weight: bold;
   padding: 10px;
 }
+
 .save-button {
   border-color: #00bc77;
   background-color: #00bc77;
   color: #fff;
   font-weight: bold;
   padding: 10px;
+  margin-right: 1rem;
+  width: 100px;
 }
+
 .cancel-button {
   border-color: #00bc77;
   background-color: #00bc77;
   color: #fff;
   font-weight: bold;
   padding: 10px;
+  width: 100px;
 }
 
 .account {
