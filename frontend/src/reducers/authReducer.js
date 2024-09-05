@@ -3,6 +3,8 @@ import { LOGIN_SUCCESS, LOGOUT, UPDATE_USERNAME } from "../actions/authActions";
 const initialState = {
   isLoggedIn: false,
   username: "",
+  firstName: "",
+  lastName: "",
   token: "",
 };
 
@@ -13,6 +15,8 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         username: action.payload.username,
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName,
         token: action.payload.token,
       };
     case LOGOUT:

@@ -37,9 +37,9 @@ export const login = (email, password) => async (dispatch) => {
     }
 
     const userProfileData = await userProfileResponse.json();
-    const { userName } = userProfileData.body;
+    const { userName, firstName, lastName } = userProfileData.body;
 
-    dispatch(loginSuccess(userName, token));
+    dispatch(loginSuccess(userName, firstName, lastName, token));
     return { success: true };
   } catch (error) {
     console.error("Erreur lors de la connexion :", error);
@@ -48,10 +48,10 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 // Action pour la connexion réussie
-export const loginSuccess = (username, token) => {
+export const loginSuccess = (username, firstName, lastName, token) => {
   return {
     type: LOGIN_SUCCESS,
-    payload: { username, token },
+    payload: { username, firstName, lastName, token },
   };
 };
 
@@ -81,8 +81,8 @@ export const checkAuthStatus = () => async (dispatch, getState) => {
 
     if (response.ok) {
       const data = await response.json();
-      const { userName } = data.body;
-      dispatch(loginSuccess(userName, token));
+      const { userName, firstName, lastName } = data.body;
+      dispatch(loginSuccess(userName, firstName, lastName, token));
     } else {
       dispatch(logout());
     }

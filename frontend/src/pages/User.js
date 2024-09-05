@@ -1,34 +1,41 @@
-import React, { useState } from "react";
+// components/User.js
+
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUsername } from "../actions/authActions";
+import { updateUsername, checkAuthStatus } from "../actions/authActions";
 import "../styles/User.css";
 
 const User = () => {
-  const { username } = useSelector((state) => state.auth);
+  const { username, firstName, lastName } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [newFirstName, setNewFirstName] = useState(firstName);
+  const [newLastName, setNewLastName] = useState(lastName);
+
+  useEffect(() => {
+    dispatch(checkAuthStatus());
+  }, [dispatch]);
+
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const handleSaveClick = () => {
-    dispatch(updateUsername(newUsername)); //
+    dispatch(updateUsername(newUsername));
     setIsEditing(false);
   };
 
   const handleCancelClick = () => {
     setIsEditing(false);
     setNewUsername(username);
-    setFirstName("");
-    setLastName("");
+    setNewFirstName(firstName);
+    setNewLastName(lastName);
   };
 
-  const handleInputChange = (event, setState) => {
-    setState(event.target.value);
+  const handleInputChange = (event, setter) => {
+    setter(event.target.value);
   };
 
   return (
@@ -50,17 +57,19 @@ const User = () => {
               />
               <input
                 type="text"
-                value={firstName}
-                onChange={(event) => handleInputChange(event, setFirstName)}
+                value={newFirstName}
+                onChange={(event) => handleInputChange(event, setNewFirstName)}
                 className="edit-input"
                 placeholder="First Name"
+                disabled
               />
               <input
                 type="text"
-                value={lastName}
-                onChange={(event) => handleInputChange(event, setLastName)}
+                value={newLastName}
+                onChange={(event) => handleInputChange(event, setNewLastName)}
                 className="edit-input"
                 placeholder="Last Name"
+                disabled
               />
             </>
           )}
