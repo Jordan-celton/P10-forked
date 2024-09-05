@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./reducers/authReducer";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // utilise localStorage pour le web
+import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
 
 const persistConfig = {

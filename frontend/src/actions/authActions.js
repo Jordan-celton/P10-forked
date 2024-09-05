@@ -2,37 +2,48 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGOUT = "LOGOUT";
 export const UPDATE_USERNAME = "UPDATE_USERNAME";
 
-// Action pour la mise à jour du nom d'utilisateur
-export const updateUsername = (newUsername) => async (dispatch, getState) => {
-  const token = getState().auth.token;
-  if (!token) {
-    dispatch(logout());
-    return;
-  }
-
+// Action pour la connexion
+export const login = (email, password) => async (dispatch) => {
   try {
-    const response = await fetch("http://localhost:3001/api/v1/user/profile", {
-      method: "PUT",
+    const response = await fetch("http://localhost:3001/api/v1/user/login", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ userName: newUsername }),
+      body: JSON.stringify({ email, password }),
     });
 
     if (!response.ok) {
-      throw new Error("Erreur lors de la mise à jour du nom d'utilisateur");
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Erreur lors de la connexion");
     }
 
-    dispatch({
-      type: UPDATE_USERNAME,
-      payload: { username: newUsername },
-    });
-  } catch (error) {
-    console.error(
-      "Erreur lors de la mise à jour du nom d'utilisateur :",
-      error
+    const data = await response.json();
+    const { token } = data.body;
+
+    const userProfileResponse = await fetch(
+      "http://localhost:3001/api/v1/user/profile",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
+
+    if (!userProfileResponse.ok) {
+      throw new Error("Erreur lors de la récupération du profil utilisateur");
+    }
+
+    const userProfileData = await userProfileResponse.json();
+    const { userName } = userProfileData.body;
+
+    dispatch(loginSuccess(userName, token));
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de la connexion :", error);
+    return { success: false, message: error.message };
   }
 };
 
@@ -84,47 +95,36 @@ export const checkAuthStatus = () => async (dispatch, getState) => {
   }
 };
 
-// Action pour la connexion
-export const login = (email, password) => async (dispatch) => {
+// Action pour la mise à jour du nom d'utilisateur
+export const updateUsername = (newUsername) => async (dispatch, getState) => {
+  const token = getState().auth.token;
+  if (!token) {
+    dispatch(logout());
+    return;
+  }
+
   try {
-    const response = await fetch("http://localhost:3001/api/v1/user/login", {
-      method: "POST",
+    const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ userName: newUsername }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Erreur lors de la connexion");
+      throw new Error("Erreur lors de la mise à jour du nom d'utilisateur");
     }
 
-    const data = await response.json();
-    const { token } = data.body;
-
-    const userProfileResponse = await fetch(
-      "http://localhost:3001/api/v1/user/profile",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!userProfileResponse.ok) {
-      throw new Error("Erreur lors de la récupération du profil utilisateur");
-    }
-
-    const userProfileData = await userProfileResponse.json();
-    const { userName } = userProfileData.body;
-
-    dispatch(loginSuccess(userName, token));
-    return { success: true };
+    dispatch({
+      type: UPDATE_USERNAME,
+      payload: { username: newUsername },
+    });
   } catch (error) {
-    console.error("Erreur lors de la connexion :", error);
-    return { success: false, message: error.message };
+    console.error(
+      "Erreur lors de la mise à jour du nom d'utilisateur :",
+      error
+    );
   }
 };
