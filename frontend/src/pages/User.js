@@ -4,15 +4,20 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUsername, checkAuthStatus } from "../actions/authActions";
 import "../styles/User.css";
+import { useNavigate } from "react-router-dom";
 
 const User = () => {
-  const { username, firstName, lastName } = useSelector((state) => state.auth);
+  const { username, firstName, lastName, isLoggedIn } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
 
   const [isEditing, setIsEditing] = useState(false);
   const [newUsername, setNewUsername] = useState(username);
   const [newFirstName, setNewFirstName] = useState(firstName);
   const [newLastName, setNewLastName] = useState(lastName);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(checkAuthStatus());
@@ -37,6 +42,10 @@ const User = () => {
   const handleInputChange = (event, setter) => {
     setter(event.target.value);
   };
+
+  if (!isLoggedIn) {
+    navigate("/login");
+  }
 
   return (
     <main className="main bg-dark">
