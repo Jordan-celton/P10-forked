@@ -22,10 +22,6 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Configuration du store Redux
 const store = configureStore({
   reducer: persistedReducer, // Utilisation du reducer persistant
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
 });
 
 // Création d'un persistor pour gérer la persistance du store
