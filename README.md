@@ -1,13 +1,62 @@
-Résumé du Projet
-Dans ce projet, vous allez développer le front-end d'une application bancaire en utilisant React et Redux pour créer une expérience utilisateur dynamique et réactive.
+# 🏦 Développer le front-end d'une application bancaire
+Dans ce projet, vous créerez une application bancaire front-end en utilisant React et Redux, tout en intégrant une communication fluide avec le back-end via des appels API REST.
 
-Objectifs d'Apprentissage :
-Intégration Front-End et Back-End : Votre mission principale consistera à intégrer le front-end avec le back-end via des appels API. Vous apprendrez à écrire des appels à l'API REST pour assurer une communication fluide entre le client et le serveur.
 
-Développement de l'Interface Utilisateur : Utiliser React pour créer l'interface utilisateur de l'application bancaire, en vous concentrant sur le développement d'un tableau de bord complet et responsive pour les utilisateurs.
+## 📝 Instructions d'installation
 
-Gestion des Données avec Redux : Implémenter Redux pour maintenir un état global cohérent à travers l'application, facilitant ainsi la gestion des données.
+Cloner le projet :
 
-Modélisation de l'API avec Swagger : Définir les points d'accès de l'API et modéliser les interactions avec les données des transactions à l'aide de Swagger, un outil qui aide à décrire les différentes routes et actions nécessaires pour l'API.
+```bash
+git clone https://github.com/Jordan-celton/P10-forked.git
+```
+Installer les dépendances :
+```bash
+npm install  
+```
+Démarrer l'application front-end
+```bash
+npm start  
+```
+Lancer le back-end : 
+```bash
+Suivre le readme du dossier back-end
+```
 
-Expérience Full-Stack avec Node.js : Utiliser Node.js pour exécuter le code JavaScript côté serveur, vous permettant d'acquérir une expérience pratique de la gestion d'une application full-stack.
+## 📚 Ce que vous apprendrez
+- Développement front-end avancé :
+
+  - Concevoir des interfaces utilisateur réactives et dynamiques avec React.
+  - Implémenter des tableaux de bord riches et fonctionnels.
+- Intégration API :
+
+  - Rédiger et gérer des appels API REST pour connecter le front-end et le back-end.
+  - Synchroniser les données de manière efficace.
+- Gestion d'état avec Redux :
+
+   - Comprendre les concepts clés comme le store, les actions, et les reducers.
+   - Maintenir un état global stable dans des applications complexes.
+- Documentation des API :
+
+   - Utiliser Swagger pour modéliser et documenter les points d'accès de l'API.
+   - Assurer la clarté et la maintenabilité des routes API.
+- Approche full-stack :
+
+  - Acquérir une expérience pratique en exécutant du code côté serveur avec Node.js.
+
+
+
+## 🛠️ Technologies utilisées
+- React : Pour développer des interfaces utilisateur modernes et interactives.
+- Redux : Pour gérer l'état global de l'application.
+- Swagger : Pour documenter et visualiser les API REST.
+- API REST : Communication front-end/back-end pour échanger des données utilisateur et des transactions.
+- Node.js : Pour exécuter et tester le code côté serveur.
+- JavaScript (ES6+) : Langage principal pour le développement.
+
+
+
+
+## 📜 License
+Ce projet est sous la licence MIT. Vous êtes libre de l'utiliser, de le modifier et de le distribuer selon les termes de cette licence.
+
+[MIT](https://choosealicense.com/licenses/mit/)
